@@ -26,26 +26,11 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
         clone.transform.localScale = 0.1f * Vector3.one;
         clone.transform.position = Sender.transform.position + Sender.transform.right * -0.1f;
 
-        //NetworkItemSync.MakeGrabbable(clone);
-        //var networkSync = NetworkItemSync.FindOrCreate(clone, itemInfo.AssetSourceUrl);
+        ParentDispenser.FireOnItemDispensed(clone, itemInfo);
 
-        Debug.Log("Looking for Hand from uipointer", Sender.transform.gameObject);
         var hand = Sender.transform.gameObject.GetComponentInParent<Hand>();
-        makeGrabbable(clone);
+        AppControllerBase.Instance.UIManager.MakeGrabbalbe(clone);
         StartCoroutine(attachToHand(hand, clone));
-    }
-
-
-    private void makeGrabbable(GameObject item)
-    {
-        var body = item.AddComponent<Rigidbody>();
-        body.useGravity = false;
-        body.drag = 0.2f;
-        body.angularDrag = 0.2f;
-        checkPhysicsMaterials(item);
-
-        item.AddComponent<Grabbable>();
-        item.AddComponent<DistanceGrabbable>();
     }
 
     private IEnumerator attachToHand(Hand hand, GameObject clone)
@@ -57,14 +42,14 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
         hand.TryGrab(grabbable);
     }
 
-    private void checkPhysicsMaterials(GameObject item)
-    {
-        var colliders = item.GetComponentsInChildren<Collider>();
-        foreach (var collider in colliders)
-        {
-            if (collider.sharedMaterial == null) collider.sharedMaterial = ParentDispenser.DefaultPhysicsMaterial;
-        }
-    }
+    //private void checkPhysicsMaterials(GameObject item)
+    //{
+    //    var colliders = item.GetComponentsInChildren<Collider>();
+    //    foreach (var collider in colliders)
+    //    {
+    //        if (collider.sharedMaterial == null) collider.sharedMaterial = ParentDispenser.DefaultPhysicsMaterial;
+    //    }
+    //}
 
     #region -- Unused IHandlePointerEvent's --
     public void OnGripEnd(IUIPointer Sender)

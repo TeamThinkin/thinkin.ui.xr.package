@@ -37,9 +37,7 @@ public class ScrollGestureZone : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (IsTrackActive) return;
-
-        
+        if (IsTrackActive) return;       
 
         var hand = other.gameObject.GetComponentInParent<Hand>();
         if(hand != null)
