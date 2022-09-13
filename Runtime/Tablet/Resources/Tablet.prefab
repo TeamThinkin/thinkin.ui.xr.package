@@ -2194,6 +2194,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2457452570543644424}
     m_Modifications:
+    - target: {fileID: 2703681273917200580, guid: 8f8f309beb89a71478028c0001033c9e, type: 3}
+      propertyPath: m_text
+      value: Config!!!
+      objectReference: {fileID: 0}
     - target: {fileID: 4713586929588648974, guid: 8f8f309beb89a71478028c0001033c9e, type: 3}
       propertyPath: OnPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

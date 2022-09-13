@@ -27,7 +27,6 @@ public class DispenserElementPresenterXR : DispenserElementPresenter
 
     public int GetNextItemId()
     {
-        //if (sync != null) sync.RequestOwnership(); //TODO: remove this once the refactor is complete
         return ItemCounter++;
     }
 

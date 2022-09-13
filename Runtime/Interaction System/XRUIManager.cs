@@ -11,9 +11,10 @@ public class XRUIManager : IUIManager
         body.useGravity = false;
         body.drag = 0.2f;
         body.angularDrag = 0.2f;
-        //checkPhysicsMaterials(Item); //TODO: Remove during the great package refactor
+        //checkPhysicsMaterials(Item); //TODO: Would be nice to assign a default physics material so things have some bounce
 
         Item.AddComponent<Grabbable>();
         Item.AddComponent<DistanceGrabbable>();
+        Item.AddComponent<XRGrabbable>();
     }
 }
