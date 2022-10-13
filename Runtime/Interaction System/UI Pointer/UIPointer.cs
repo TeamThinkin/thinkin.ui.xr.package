@@ -44,14 +44,17 @@ public class UIPointer : MonoBehaviour, IUIPointer
 
             if (rayInfo.collider.gameObject.TryGetComponent<IHandlePointerEvent>(out hoverItem))
             {
-                if (currentHoverItem != null)
+                if (hoverItem != currentHoverItem)
                 {
-                    currentHoverItem.OnHoverEnd(this);
-                    currentHoverItem = null;
-                }
+                    if (currentHoverItem != null)
+                    {
+                        notifyEndHover();
+                        currentHoverItem = null;
+                    }
 
-                currentHoverItem = hoverItem;
-                currentHoverItem.OnHoverStart(this, rayInfo);
+                    currentHoverItem = hoverItem;
+                    notifyHoverStart(rayInfo);
+                }
             }
             else
             {
@@ -64,12 +67,36 @@ public class UIPointer : MonoBehaviour, IUIPointer
 
             if (currentHoverItem != null)
             {
-                currentHoverItem.OnHoverEnd(this);
+                notifyEndHover();
                 currentHoverItem = null;
             }
         }
 
         updateVisuals(rayInfo);
+    }
+
+    private void notifyHoverStart(RaycastHit rayInfo)
+    {
+        try
+        {
+            if(currentHoverItem != null) currentHoverItem.OnHoverStart(this, rayInfo);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Error with UIPoint OnHoverStart: " + ex.Message);
+        }
+    }
+
+    private void notifyEndHover()
+    {
+        try
+        {
+            if(currentHoverItem != null) currentHoverItem.OnHoverEnd(this);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Error with UIPointer OnHoverEnd: " + ex.Message);
+        }
     }
 
     private void updateVisuals(RaycastHit hitInfo)

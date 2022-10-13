@@ -8,12 +8,12 @@ public class BlockLayoutItem : MonoBehaviour, ILayoutItem
 
     private Bounds bounds = new Bounds();
 
-    public Bounds GetBounds()
+    public Bounds? GetBounds()
     {
         bounds.center = BlockReference.localPosition;
         bounds.size = BlockReference.localScale;
         return bounds;
     }
 
-    public void UpdateLayout() {}
+    public void ExecuteLayout() {}
 }

@@ -15,7 +15,7 @@ public class Tablet : MonoBehaviour
     private void Start()
     {
         createNetworkSync();
-        MenuScrollArea.UpdateLayout();
+        MenuScrollArea.ExecuteLayout();
 
         AppSceneManager.OnEnvironmentUnloaded += AppSceneManager_OnEnvironmentUnloaded;
 

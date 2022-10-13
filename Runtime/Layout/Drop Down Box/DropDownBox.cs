@@ -34,7 +34,7 @@ public class DropDownBox : MonoBehaviour, IHandlePointerEvent
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         PointerHandlerChild.Inject(this);
 
@@ -42,7 +42,7 @@ public class DropDownBox : MonoBehaviour, IHandlePointerEvent
 
         List.transform.localScale = new Vector3(1, 0, 1);
         List.SetActive(false);
-        ListItemsContainer.UpdateLayout();
+        ListItemsContainer.ExecuteLayout();
 
         //loadMockOptions();
     }
@@ -72,8 +72,8 @@ public class DropDownBox : MonoBehaviour, IHandlePointerEvent
             listItem.transform.SetParent(ListItemsContainer.transform, false);
         }
 
-        ListItemsContainer.UpdateLayout();
-        var listBounds = ListItemsContainer.GetBounds();
+        ListItemsContainer.ExecuteLayout();
+        var listBounds = ListItemsContainer.GetBounds().Value;
         ListBackground.localScale = new Vector3(1, listBounds.size.y, 1);
 
         SelectedItem = listItems.ActiveItems.First().Dto;

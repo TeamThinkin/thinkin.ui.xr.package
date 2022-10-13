@@ -12,7 +12,7 @@ public class StackPanel : LayoutContainer
 
     public override GameObject ContentContainer => this.gameObject;
 
-    public override void UpdateLayout()
+    public override void ExecuteLayout()
     {
         Vector3 value = Vector3.zero;
         float length;
@@ -28,7 +28,7 @@ public class StackPanel : LayoutContainer
             var layoutItem = child.GetComponentInChildren<ILayoutItem>();
             if (layoutItem != null)
             {
-                var itemBounds = layoutItem.GetBounds();
+                var itemBounds = layoutItem.GetBounds().Value;
                 itemBounds.size += ItemPadding;
                 length = Mathf.Abs(Vector2.Dot(StackDirection, itemBounds.size));
                 totalLength += length;
@@ -56,7 +56,7 @@ public class StackPanel : LayoutContainer
         }
     }
 
-    public override Bounds GetBounds()
+    public override Bounds? GetBounds()
     {
         return bounds;
     }

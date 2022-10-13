@@ -6,42 +6,44 @@ using UnityEngine;
 public class MapPanel : TabPanel
 {
     [SerializeField] private DropDownBox MapsDropDownBox;
-    [SerializeField] private MapView MapContents;
+    //[SerializeField] private MapView MapContents;
+    [SerializeField] private GameObject MapContents;
     [SerializeField] private TabPanel SelectEnvironmentPanel;
     [SerializeField] private NewMapDestinationWizard NewDestinationWizard;
 
-    //public RegistryEntryDto SelectedMapDto { get; private set; }//TODO: commented out during the Package refactor
+    //public RegistryEntryDto SelectedMapDto { get; private set; }
+    private string selectedMapUrl;
 
     protected override void OnShow()
     {
         base.OnShow();
 
-        //TODO: commented out during the Package refactor
-        //if (UserInfo.CurrentUser != null && UserInfo.CurrentUser != UserInfo.UnknownUser)
-        //{
-        //    loadMapList();
-        //}
-
-        //UserInfo.OnCurrentUserChanged += UserInfo_OnCurrentUserChanged;
         MapsDropDownBox.SelectedItemChanged += MapsDropDownBox_SelectedItemChanged;
+
+        if (UserInfo.CurrentUser != null && UserInfo.CurrentUser != UserInfo.UnknownUser)
+        {
+            loadMapList();
+        }
+
+        UserInfo.OnCurrentUserChanged += UserInfo_OnCurrentUserChanged;
     }
 
 
     protected override void OnHide()
     {
         base.OnHide();
-        //UserInfo.OnCurrentUserChanged -= UserInfo_OnCurrentUserChanged;//TODO: commented out during the Package refactor
+        UserInfo.OnCurrentUserChanged -= UserInfo_OnCurrentUserChanged;//TODO: commented out during the Package refactor
     }
 
     private void OnDestroy()
     {
-        //UserInfo.OnCurrentUserChanged -= UserInfo_OnCurrentUserChanged;//TODO: commented out during the Package refactor
+        UserInfo.OnCurrentUserChanged -= UserInfo_OnCurrentUserChanged;//TODO: commented out during the Package refactor
         MapsDropDownBox.SelectedItemChanged -= MapsDropDownBox_SelectedItemChanged;
     }
 
     public async void NavigateHome()
     {
-        //await DestinationPresenter.Instance.DisplayUrl(UserInfo.CurrentUser.HomeRoomUrl);//TODO: commented out during the Package refactor
+        await DestinationPresenter.Instance.DisplayUrl(UserInfo.CurrentUser.HomeRoomUrl);
     }
 
     public void NewDestinationButtonClicked()
@@ -49,59 +51,39 @@ public class MapPanel : TabPanel
         NewDestinationWizard.StartWizard();
     }
 
-    //TODO: commented out during the Package refactor
-    //private void UserInfo_OnCurrentUserChanged(UserInfo obj)
-    //{
-    //    loadMapList();
-    //}
-
-    private void MapsDropDownBox_SelectedItemChanged(ListItemDto obj)
+    private void UserInfo_OnCurrentUserChanged(UserInfo obj)
     {
-        //TODO: commented out during the Package refactor
-        //if(SelectedMapDto == obj.Value)
-        //{
-        //    return;
-        //}
-        //SelectedMapDto = obj.Value as RegistryEntryDto;
-        //populateMap(SelectedMapDto.Url);
+        loadMapList();
+    }
+
+    private void MapsDropDownBox_SelectedItemChanged(ListItemDto selectedItem)
+    {
+        string url = selectedItem.Value as string;
+        if (selectedMapUrl == url) return;
+
+        selectedMapUrl = url;
+        populateMap(selectedMapUrl);
     }
 
     private async void loadMapList()
     {
-        //TODO: commented out during the Package refactor
+        Debug.Log("Loading map list...");
         //var mapDtos = await WebAPI.Maps();
         //var list = mapDtos.Select(i => new ListItemDto() { Value = i, Text = i.DisplayName });
-        //MapsDropDownBox.SetItems(list);
+
+        var list = new[] {
+            new ListItemDto() { Text = "Public Map", Value = "/public-map" }
+        };
+
+        MapsDropDownBox.SetItems(list);
     }
 
     private async void populateMap(string mapUrl)
     {
-        await MapContents.LoadCollection(mapUrl);
+        var absUrl = mapUrl.TransformRelativeUrlToAbsolute(DestinationPresenter.Instance.CurrentUrl);
+        Debug.Log("Populating map with url: " + absUrl);
+        //await MapContents.LoadCollection(mapUrl);
+        //DestinationPresenter.Instance.CurrentUrl.getsub
+        await DocumentManager.LoadDocumentIntoContainer(absUrl, MapContents.transform);
     }
 }
-
-/*
-Old Collection based Urls
-
-Classroom
-https://thinkin-api.glitch.me/v1/auth/collection/test-room
-
-Board Room
-destination-5b676cd5-3a65-407a-94bc-7cf7edcd9577
-
-Theater
-destination-c17b835e-631c-4001-871f-5bd511b702f5
-
-Hotel
-destination-1e496332-8b15-466b-aede-efc0e81ec1ef
-
-Campus
-destination-b4a9935d-7854-4540-9787-1a00a1d1f8b4
-
-https://usc-intervrse.glitch.me/campus
-https://usc-intervrse.glitch.me/theater
-https://usc-intervrse.glitch.me/hotel
-https://usc-intervrse.glitch.me/boardroom
-https://usc-intervrse.glitch.me/classroom
-
-*/

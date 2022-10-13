@@ -42,7 +42,7 @@ public class ScrollArea : LayoutContainer
     {
         contentLayoutContainer = _contentContainer.GetComponent<LayoutContainer>();
         updateLayoutBounds();
-        UpdateLayout();
+        ExecuteLayout();
     }
 
     private void Update()
@@ -121,7 +121,7 @@ public class ScrollArea : LayoutContainer
     {
         if (contentLayoutContainer != null)
         {
-            contentBounds = contentLayoutContainer.GetBounds();
+            contentBounds = contentLayoutContainer.GetBounds().Value;
         }
         else
         {
@@ -134,7 +134,7 @@ public class ScrollArea : LayoutContainer
                 var layoutItem = childTransform.GetComponentInChildren<ILayoutItem>();
                 if (layoutItem != null)
                 {
-                    var bounds = layoutItem.GetBounds();
+                    var bounds = layoutItem.GetBounds().Value;
                     bounds.center += childTransform.localPosition;
 
                     if (isFirstItem)
@@ -229,15 +229,15 @@ public class ScrollArea : LayoutContainer
         ContentContainer.transform.localPosition = position;
     }
 
-    public override Bounds GetBounds()
+    public override Bounds? GetBounds()
     {
         return layoutBounds;
         //return contentLayoutContainer.GetBounds();
     }
 
-    public override void UpdateLayout()
+    public override void ExecuteLayout()
     {
-        if (contentLayoutContainer != null) contentLayoutContainer.UpdateLayout();
+        if (contentLayoutContainer != null) contentLayoutContainer.ExecuteLayout();
 
         updateContentBounds();
         constrainScrollPosition();
