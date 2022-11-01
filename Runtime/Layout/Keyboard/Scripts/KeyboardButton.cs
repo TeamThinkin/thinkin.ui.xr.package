@@ -18,18 +18,18 @@ public class KeyboardButton : ButtonInteractable
         Background.localScale = new Vector3(width, Background.localScale.y, Background.localScale.z);
     }
 
-    protected override void onInteractionStart(Hand hand)
+    protected override void onInteractionStart()
     {
-        base.onInteractionStart(hand);
+        base.onInteractionStart();
 
         Keyboard.OnKeyDown(this);
         //transform.localPosition = LayoutLocalPosition + Vector3.forward * LayoutLocalScale.x * 0.5f;
     }
 
 
-    protected override void onInteractionEnd(Hand hand)
+    protected override void onInteractionEnd()
     {
-        base.onInteractionEnd(hand);
+        base.onInteractionEnd();
 
         Keyboard.OnKeyUp(this);
         //transform.localPosition = LayoutLocalPosition;

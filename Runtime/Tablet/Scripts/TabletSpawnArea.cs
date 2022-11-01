@@ -34,6 +34,7 @@ public class TabletSpawnArea : HandTriggerAreaEvents
 
         if (hoverTablet != null)
         {
+            Debug.Log("Destroying tablet in spawn zone");
             Destroy(hoverTablet.gameObject);
         }
         hoverTablet = null;
@@ -47,7 +48,7 @@ public class TabletSpawnArea : HandTriggerAreaEvents
         var tablet = Instantiate(TabletPrefab);
         tablet.transform.position = hand.transform.position;
         tablet.transform.rotation = hand.transform.rotation;
-
+        tablet.transform.Rotate(hand.transform.forward - hand.transform.up, 180);
         StartCoroutine(attachToHand(hand, tablet));
     }
 
@@ -56,6 +57,8 @@ public class TabletSpawnArea : HandTriggerAreaEvents
         yield return new WaitForEndOfFrame(); //The grabbable seems to need some things to be setup in the first frame before the TryGrab can succeed
 
         var tabletGrabbable = tablet.GetComponent<Grabbable>();
+        tabletGrabbable.body.isKinematic = false;
+        tabletGrabbable.wasKinematic = true;
         hand.TryGrab(tabletGrabbable);
         hoverTablet = tablet.GetComponent<Tablet>();
     }

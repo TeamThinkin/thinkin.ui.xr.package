@@ -20,9 +20,9 @@ public class ListItem : ButtonInteractable
         Label.text = Dto.Text;
     }
 
-    protected override void Pressed(Hand hand)
+    protected override void Pressed()
     {
-        base.Pressed(hand);
+        base.Pressed();
         ParentListControl.ListItem_Selected(this);
     }
 }
