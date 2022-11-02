@@ -29,7 +29,7 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
         ParentDispenser.FireOnItemDispensed(clone, itemInfo);
 
         var hand = Sender.transform.gameObject.GetComponentInParent<Hand>();
-        AppControllerBase.Instance.UIManager.MakeGrabbalbe(clone);
+        AppControllerBase.Instance.UIManager.MakeGrabbable(clone);
         StartCoroutine(attachToHand(hand, clone));
     }
 

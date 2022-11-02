@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class XRUIManager : IUIManager
 {
-    public void MakeGrabbalbe(GameObject Item)
+    public void MakeGrabbable(GameObject Item)
     {
         var body = Item.AddComponent<Rigidbody>();
         body.useGravity = false;

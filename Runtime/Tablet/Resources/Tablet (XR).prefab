@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1102861556007952229, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.781
       objectReference: {fileID: 0}
     - target: {fileID: 1102861556007952229, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
       propertyPath: m_LocalPosition.z
@@ -54,6 +54,26 @@ PrefabInstance:
     - target: {fileID: 1102861556007952251, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
       propertyPath: m_Name
       value: Tablet (XR)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470942813194965337, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0203
+      objectReference: {fileID: 0}
+    - target: {fileID: 3257796568902866942, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
+      propertyPath: StackDirection.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3318221066130344864, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.029402453
+      objectReference: {fileID: 0}
+    - target: {fileID: 6033308551409291096, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1639
+      objectReference: {fileID: 0}
+    - target: {fileID: 6916582581655000481, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3122595
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8950660aad18cbf4eb0222ac9f074d13, type: 3}
