@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4812689167667348192, guid: e5947ca764483c94b82c024a8c09c7bb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56313a522bbf2144dbd2a97d275e3f08, type: 2}
     - target: {fileID: 4812689167667348206, guid: e5947ca764483c94b82c024a8c09c7bb, type: 3}
       propertyPath: m_Name
       value: UI Pointer (XR)
