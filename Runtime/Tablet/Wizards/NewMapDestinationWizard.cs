@@ -55,20 +55,20 @@ public class NewMapDestinationWizard : MonoBehaviour
 
     private void showPanel()
     {
-        switch(stepIndex)
-        {
-            case -1:
-                MapPanel.ShowTab();
-                break;
-            case 0:
-                EnvironmentSelectorPanel.ShowTab();
-                break;
-            case 1:
-                DetailsPanel.ShowTab();
-                break;
-            case 2:
-                MapPanel.ShowTab();
-                break;
-        }
+        //switch(stepIndex)
+        //{
+        //    case -1:
+        //        MapPanel.ShowTab();
+        //        break;
+        //    case 0:
+        //        EnvironmentSelectorPanel.ShowTab();
+        //        break;
+        //    case 1:
+        //        DetailsPanel.ShowTab();
+        //        break;
+        //    case 2:
+        //        MapPanel.ShowTab();
+        //        break;
+        //}
     }
 }
