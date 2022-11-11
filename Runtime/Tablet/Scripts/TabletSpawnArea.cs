@@ -46,6 +46,7 @@ public class TabletSpawnArea : HandTriggerAreaEvents
         if (!this.enabled) return;
 
         var tablet = Instantiate(TabletPrefab);
+        tablet.gameObject.name = "Tablet (" + Time.time.GetHashCode() + ")";
         tablet.transform.position = hand.transform.position;
         tablet.transform.rotation = hand.transform.rotation;
         tablet.transform.Rotate(hand.transform.forward - hand.transform.up, 180);
