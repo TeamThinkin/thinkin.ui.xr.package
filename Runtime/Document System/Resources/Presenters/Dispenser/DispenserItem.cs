@@ -21,9 +21,7 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
 
     public void OnGripStart(IUIPointer Sender, RaycastHit RayInfo)
     {
-        Debug.Log("Active scene: " + UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         var clone = Instantiate(itemInfo.Prefab); //, ParentDispenser.SceneChildrenContainer.transform);
-        UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(clone, UnityEngine.SceneManagement.SceneManager.GetActiveScene());
         clone.name = ParentDispenser.gameObject.name + ": " + gameObject.name + ParentDispenser.GetNextItemId();
         clone.transform.localScale = 0.1f * Vector3.one;
         clone.transform.position = Sender.transform.position + Sender.transform.right * -0.1f;
