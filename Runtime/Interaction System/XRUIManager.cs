@@ -13,7 +13,9 @@ public class XRUIManager : IUIManager
         body.angularDrag = 0.2f;
         //checkPhysicsMaterials(Item); //TODO: Would be nice to assign a default physics material so things have some bounce
 
-        Item.AddComponent<Grabbable>();
+        var grabbable = Item.AddComponent<Grabbable>();
+        grabbable.parentOnGrab = false;
+
         Item.AddComponent<DistanceGrabbable>();
         Item.AddComponent<XRGrabbable>();
     }
