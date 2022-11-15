@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete]
 public class StackPanel : LayoutContainer
 {
     [SerializeField] private Vector3 StackDirection = Vector3.down;

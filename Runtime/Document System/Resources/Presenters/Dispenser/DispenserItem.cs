@@ -21,7 +21,7 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
 
     public void OnGripStart(IUIPointer Sender, RaycastHit RayInfo)
     {
-        var clone = Instantiate(itemInfo.Prefab); //, ParentDispenser.SceneChildrenContainer.transform);
+        var clone = Instantiate(itemInfo.Prefab);
         clone.name = ParentDispenser.gameObject.name + ": " + gameObject.name + ParentDispenser.GetNextItemId();
         clone.transform.localScale = 0.1f * Vector3.one;
         clone.transform.position = Sender.transform.position + Sender.transform.right * -0.1f;
@@ -41,15 +41,6 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
         hand.AllowGrabbing = true;
         hand.TryGrab(grabbable);
     }
-
-    //private void checkPhysicsMaterials(GameObject item)
-    //{
-    //    var colliders = item.GetComponentsInChildren<Collider>();
-    //    foreach (var collider in colliders)
-    //    {
-    //        if (collider.sharedMaterial == null) collider.sharedMaterial = ParentDispenser.DefaultPhysicsMaterial;
-    //    }
-    //}
 
     #region -- Unused IHandlePointerEvent's --
     public void OnGripEnd(IUIPointer Sender)
