@@ -1,11 +1,13 @@
 ﻿using Autohand;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 
 public static class XrUIModule
 {
     public static void Initialize()
     {
+        ElementPresenterFactory.DiscoverTypes(Assembly.GetExecutingAssembly());
         AppControllerBase.Instance.UIManager.OnMakeGrabbable += UIManager_OnMakeGrabbable;
     }
 
