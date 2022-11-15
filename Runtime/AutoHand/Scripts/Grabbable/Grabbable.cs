@@ -223,7 +223,6 @@ namespace Autohand {
                 isWaitingForRest = false;
                 if (body != null)
                 {
-                    Debug.Log("Restoring kinematic state");
                     body.isKinematic = true;
                     OnBeginRest?.Invoke(this);
                 }
@@ -547,7 +546,6 @@ namespace Autohand {
                 //NOTE: This section added by mbell 6/29/22 to facilitate kinematic grabbables
                 if (wasKinematic)
                 {
-                    Debug.Log("Begin wait for rest");
                     isWaitingForRest = true;
                 }
                 ///////////////////////
