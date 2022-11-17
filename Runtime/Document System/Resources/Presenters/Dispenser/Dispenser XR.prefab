@@ -220,7 +220,7 @@ MonoBehaviour:
   DefaultMaterial: {fileID: 13400000, guid: 1a4da518097feef4fafad604e3af72e6, type: 2}
   Scroll: 0
   ItemCounter: 0
-  GestureInput: {fileID: 0}
+  GestureInput: {fileID: 8069624219616072288}
 --- !u!4 &7891582950823903934 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3267504854423393709, guid: 846b1ebbd4164b2469a68e723eadbb2d, type: 3}
