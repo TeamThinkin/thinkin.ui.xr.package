@@ -34,7 +34,6 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
 
     private void Grabbable_OnBeforeGrab(IGrabber Grabber, IGrabbable Grabbable)
     {
-        Debug.Log("Playing grab sound: " + ParentDispenser.ItemGrabSound);
         audioSource.PlayOneShot(ParentDispenser.ItemGrabSound, 1f);
         itemInfo.IsDisconnected = true;
         itemInfo.Body.isKinematic = false;
@@ -53,7 +52,9 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
             audioSource.PlayOneShot(ParentDispenser.ItemRestoreSound);
             itemInfo.IsDisconnected = false;
             itemInfo.Body.isKinematic = true;
-
+        }
+        else
+        {
             Destroy(this);
         }
     }
