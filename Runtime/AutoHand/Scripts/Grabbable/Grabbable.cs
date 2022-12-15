@@ -821,15 +821,17 @@ namespace Autohand {
             if(!beingDestroyed) {
                 ResetRigidbody();
 
-                if (body != null && !heldBodyJointed && (placePoint == null || !(placePoint.placedObject == this && placePoint.parentOnPlace)))
+                if (body != null && !heldBodyJointed && (placePoint == null || !(placePoint.placedObject == this && placePoint.parentOnPlace)) && parentOnGrab) //NOTE: parentOnGrab check added by mbell 12/15/2022
                 {
                     body.transform.parent = originalParent;
                 }
 
                 for(int i = 0; i < jointedBodies.Count; i++) {
                     if(jointedBodies[i].gameObject.HasGrabbable(out var grab)) {
-                        if(grab.HeldCount() == 0)
+                        if (grab.HeldCount() == 0)
+                        {
                             grab.transform.parent = grab.originalParent;
+                        }
                         grab.heldBodyJointed = false;
                     }
                     else if(!heldBodyJointed)

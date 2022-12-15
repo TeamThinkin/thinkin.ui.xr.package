@@ -20,6 +20,16 @@ public class DispenserElementPresenterXR : DispenserElementPresenter
         GestureInput.OnUserInput -= GestureInput_OnUserInput;
     }
 
+    public void DisableGestureZone()
+    {
+        GestureInput.enabled = false;
+    }
+
+    public void EnableGestureZone()
+    {
+        GestureInput.enabled = true;
+    }
+
     private void GestureInput_OnUserInput()
     {
         FireOnUserInput();

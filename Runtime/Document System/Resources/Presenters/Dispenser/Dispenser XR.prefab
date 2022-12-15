@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3830181026245878601}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.4847, z: 0}
-  m_LocalScale: {x: 0.7814605, y: 0.68240535, z: 0.041302003}
+  m_LocalPosition: {x: 0, y: 0.19848, z: 0}
+  m_LocalScale: {x: 0.7814605, y: 0.30949068, z: 0.041302003}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5939577781486523074}
@@ -175,6 +175,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7782117918917489470, guid: 846b1ebbd4164b2469a68e723eadbb2d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 846b1ebbd4164b2469a68e723eadbb2d, type: 3}
+--- !u!82 &2251780914002862651 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6909617440544732456, guid: 846b1ebbd4164b2469a68e723eadbb2d, type: 3}
+  m_PrefabInstance: {fileID: 4673622313837926163}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2498158144643204396 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7095200362525823551, guid: 846b1ebbd4164b2469a68e723eadbb2d, type: 3}
@@ -214,10 +219,14 @@ MonoBehaviour:
   ContentContainer: {fileID: 7891582950823903934}
   LayoutReference: {fileID: 9164077708918512750}
   ItemSize: 0.1
+  ItemPadding: 0.1
   RowCount: 3
   JitterScale: {x: 0.2, y: 0.6, z: 10}
   ScrollMargin: 0.3
-  DefaultMaterial: {fileID: 13400000, guid: 1a4da518097feef4fafad604e3af72e6, type: 2}
+  _DispenserAudioSource: {fileID: 2251780914002862651}
+  _ItemGrabSound: {fileID: 8300000, guid: 435ef890c58db7b499bcbaf8aab0210f, type: 3}
+  _ItemReleaseSound: {fileID: 8300000, guid: 56c69e67e4f43454ca84891d34005722, type: 3}
+  _ItemRestoreSound: {fileID: 8300000, guid: d377a35c3d88cac4d9e7ffb07d0ae1c8, type: 3}
   Scroll: 0
   ItemCounter: 0
   GestureInput: {fileID: 8069624219616072288}
