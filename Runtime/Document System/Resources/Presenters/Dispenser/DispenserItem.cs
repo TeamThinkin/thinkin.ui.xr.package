@@ -10,6 +10,7 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
     private DispenserElementPresenter.ItemInfo itemInfo;
     private AudioSource audioSource;
 
+    private IGrabbable grabbable;
     private bool isGrabbed;
     private bool isLinked;
     private Vector3 initialGrabPosition;
@@ -22,11 +23,21 @@ public class DispenserItem : MonoBehaviour, IHandlePointerEvent
         audioSource = gameObject.AddComponent<AudioSource>();
     }
 
+    private void OnDestroy()
+    {
+        if (grabbable != null)
+        {
+            grabbable.OnBeforeGrab -= Grabbable_OnBeforeGrab;
+            grabbable.OnRelease -= Grabbable_OnRelease;
+            grabbable = null;
+        }
+    }
+
     public void SetItemInfo(DispenserElementPresenter.ItemInfo ItemInfo)
     {
         this.itemInfo = ItemInfo;
 
-        var grabbable = GetComponent<IGrabbable>();
+        grabbable = GetComponent<IGrabbable>();
         grabbable.OnBeforeGrab += Grabbable_OnBeforeGrab;
         grabbable.OnRelease += Grabbable_OnRelease;
         isLinked = true;

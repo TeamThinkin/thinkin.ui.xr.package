@@ -18,16 +18,16 @@ public class ScrollGestureZone : MonoBehaviour
 
     private Material inactiveMaterial;
     private Collider activeCollider;
-    private Hand activeHand;
-    private Vector3 lastHandPosition;
+    private Transform activeInteractor;
+    private Vector3 lastInteractorPosition;
     private Collider zoneCollider;
-    private Vector3 localHandContactPoint; //Local to the hand
+    private Vector3 localInteractorContactPoint; //Local to the interactor
 
     public MomentumFloat DirectionDeltaMomentum { get; private set; }
     public Vector3 TrackPosition { get; private set; }
     public Vector3 TrackDelta { get; private set; }
     public float ScrollValue { get; private set; }
-    public bool IsTrackActive => activeHand != null;
+    public bool IsTrackActive => activeInteractor != null;
 
     private void Awake()
     {
@@ -40,23 +40,19 @@ public class ScrollGestureZone : MonoBehaviour
         if (other.isTrigger) return;
         if (IsTrackActive) return;
 
-        Debug.Log("Scroll gesture enter: " + other.gameObject.name, other.gameObject);
-        Debug.Log("Is trigger: " + other.isTrigger);
-
-        var hand = other.gameObject.GetComponentInParent<Hand>();
-        if(hand != null)
+        var interactor = other.transform;
+        if(interactor != null)
         {
             var contactPoint = zoneCollider.ClosestPoint(other.transform.position);
             
             visualRenderer.sharedMaterial = activeMaterial;
             activeCollider = other;
-            activeHand = hand;
-            //TrackPosition = activeHand.transform.position;
+            activeInteractor = interactor.transform;
             TrackPosition = contactPoint;
-            localHandContactPoint = hand.transform.InverseTransformPoint(contactPoint);
+            localInteractorContactPoint = activeInteractor.InverseTransformPoint(contactPoint);
             TrackDelta = Vector3.zero;
             DirectionDeltaMomentum.Set(0);
-            lastHandPosition = TrackPosition;
+            lastInteractorPosition = TrackPosition;
 
             OnUserInput?.Invoke();
         }
@@ -68,7 +64,10 @@ public class ScrollGestureZone : MonoBehaviour
         {
             visualRenderer.sharedMaterial = inactiveMaterial;
             activeCollider = null;
-            activeHand = null;
+            activeInteractor = null;
+
+            if (Mathf.Abs(DirectionDeltaMomentum.Value) < 0.01f) 
+                DirectionDeltaMomentum.Value = 0;
         }
     }
 
@@ -78,15 +77,14 @@ public class ScrollGestureZone : MonoBehaviour
         DirectionDeltaMomentum.DecayRate = DecayRate;
 
         DirectionDeltaMomentum.Update();
-        if (activeHand != null)
+        if (activeInteractor != null)
         {
-            //TrackPosition = activeHand.transform.position;
-            TrackPosition = activeHand.transform.TransformPoint(localHandContactPoint);
-            TrackDelta = TrackPosition - lastHandPosition;
+            TrackPosition = activeInteractor.TransformPoint(localInteractorContactPoint);
+            TrackDelta = TrackPosition - lastInteractorPosition;
 
             DirectionDeltaMomentum.Set(Vector3.Dot(transform.TransformDirection(direction), TrackDelta) * Speed);
 
-            lastHandPosition = TrackPosition;
+            lastInteractorPosition = TrackPosition;
         }
 
         ScrollValue = DirectionDeltaMomentum.Value;
