@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Keyboard : MonoBehaviour
+public class Keyboard : MonoBehaviour, IKeyboard
 {
     private class KeyInfo
     {
@@ -33,7 +33,7 @@ public class Keyboard : MonoBehaviour
     public KeyboardButton[] Buttons;
     public bool IsCapitals { get; private set; }
 
-    public EditableText Text = new EditableText();
+    public EditableText Text { get; private set; } = new EditableText();
 
     private Dictionary<KeyboardButton, KeyInfo> keyDownTime = new Dictionary<KeyboardButton, KeyInfo>();
     private bool isOpen;
