@@ -8,6 +8,7 @@ public class TabletSpawnArea : HandTriggerAreaEvents
     [SerializeField] private GameObject TabletPrefab;
 
     private Tablet hoverTablet;
+    private Tablet tabletInstance;
 
     public override void Enter(Hand hand)
     {
@@ -34,7 +35,8 @@ public class TabletSpawnArea : HandTriggerAreaEvents
         if (hoverTablet != null)
         {
             Debug.Log("Destroying tablet in spawn zone");
-            Destroy(hoverTablet.gameObject);
+            //Destroy(hoverTablet.gameObject);
+            hoverTablet.gameObject.SetActive(false);
         }
         hoverTablet = null;
     }
@@ -44,12 +46,18 @@ public class TabletSpawnArea : HandTriggerAreaEvents
         base.Grab(hand);
         if (!this.enabled) return;
 
-        var tablet = Instantiate(TabletPrefab);
-        tablet.gameObject.name = "Tablet (" + Time.time.GetHashCode() + ")";
-        tablet.transform.position = hand.transform.position;
-        tablet.transform.rotation = hand.transform.rotation;
-        tablet.transform.Rotate(hand.transform.forward - hand.transform.up, 180);
-        StartCoroutine(attachToHand(hand, tablet));
+        if (tabletInstance == null)
+        {
+            tabletInstance = Instantiate(TabletPrefab).GetComponent<Tablet>();
+            tabletInstance.gameObject.name = "Tablet (" + Time.time.GetHashCode() + ")";
+        }
+        else tabletInstance.gameObject.SetActive(true);
+
+        tabletInstance.transform.position = hand.transform.position;
+        tabletInstance.transform.rotation = hand.transform.rotation;
+        tabletInstance.transform.Rotate(hand.transform.forward - hand.transform.up, 180);
+
+        StartCoroutine(attachToHand(hand, tabletInstance.gameObject));
     }
 
     private IEnumerator attachToHand(Hand hand, GameObject tablet)
