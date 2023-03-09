@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace Autohand {
-    public delegate void CollisionEvent(GameObject from, Collision collision); //NOTE: collision added by mbell 5/5/22
+    public delegate void CollisionEvent(GameObject from);
 
     public class CollisionTracker : MonoBehaviour {
 
@@ -25,6 +25,8 @@ namespace Autohand {
         public List<GameObject> collisionObjects { get; protected set; } = new List<GameObject>();
         public List<int> collisionObjectsCount { get; protected set; } = new List<int>();
 
+        public List<Collision> collisions { get; protected set; } = new List<Collision>();
+
 
 
         public void Clear() {
@@ -37,11 +39,11 @@ namespace Autohand {
         protected virtual void OnDisable() {
             for(int i = 0; i < collisionObjects.Count; i++)
                 if(collisionObjects[i])
-                    OnCollisionLastExit?.Invoke(collisionObjects[i], null); //NOTE: collision parameter add by mbell 5/5/22
+                    OnCollisionLastExit?.Invoke(collisionObjects[i]);
 
-            for (int i = 0; i < triggerObjects.Count; i++)
+            for(int i = 0; i < triggerObjects.Count; i++)
                 if(triggerObjects[i])
-                    OnTriggeLastExit?.Invoke(triggerObjects[i], null); //NOTE: collision parameter add by mbell 5/5/22
+                    OnTriggeLastExit?.Invoke(triggerObjects[i]);
 
             collisionObjects.Clear();
             collisionObjectsCount.Clear();
@@ -61,7 +63,7 @@ namespace Autohand {
                         collisionObjectsCount.RemoveAt(i);
                     }
                     else if(!collisionObjects[i].activeInHierarchy) {
-                        OnCollisionLastExit?.Invoke(collisionObjects[i], null); //NOTE: collision parameter add by mbell 5/5/22
+                        OnCollisionLastExit?.Invoke(collisionObjects[i]);
                         collisionObjects.RemoveAt(i);
                         collisionObjectsCount.RemoveAt(i);
                     }
@@ -75,7 +77,7 @@ namespace Autohand {
                         triggerObjectsCount.RemoveAt(i);
                     }
                     else if(!triggerObjects[i].activeInHierarchy) {
-                        OnTriggeLastExit?.Invoke(triggerObjects[i], null); //NOTE: collision parameter add by mbell 5/5/22
+                        OnTriggeLastExit?.Invoke(triggerObjects[i]);
                         triggerObjects.RemoveAt(i);
                         triggerObjectsCount.RemoveAt(i);
                     }
@@ -85,8 +87,9 @@ namespace Autohand {
 
         protected virtual void OnCollisionEnter(Collision collision) {
             if(!disableCollisionTracking) {
+                collisions.Add(collision);
                 if(!collisionObjects.Contains(collision.collider.gameObject)) {
-                    OnCollisionFirstEnter?.Invoke(collision.collider.gameObject, collision); //NOTE: collision parameter add by mbell 5/5/22
+                    OnCollisionFirstEnter?.Invoke(collision.collider.gameObject);
                     collisionObjects.Add(collision.collider.gameObject);
                     collisionObjectsCount.Add(1);
                 }
@@ -96,11 +99,12 @@ namespace Autohand {
 
         protected virtual void OnCollisionExit(Collision collision) {
             if(!disableCollisionTracking) {
+                collisions.Remove(collision);
                 if(collisionObjects.Contains(collision.collider.gameObject)) {
                     var index = collisionObjects.IndexOf(collision.collider.gameObject);
                     var count = --collisionObjectsCount[index];
                     if(count == 0) {
-                        OnCollisionLastExit?.Invoke(collision.collider.gameObject, collision); //NOTE: collision parameter add by mbell 5/5/22
+                        OnCollisionLastExit?.Invoke(collision.collider.gameObject);
 
                         collisionObjectsCount.RemoveAt(index);
                         collisionObjects.Remove(collision.collider.gameObject);
@@ -109,10 +113,11 @@ namespace Autohand {
             }
         }
 
+
         protected virtual void OnTriggerEnter(Collider other) {
             if(!disableTriggersTracking) {
                 if(!triggerObjects.Contains(other.gameObject)) {
-                    OnTriggerFirstEnter?.Invoke(other.gameObject, null); //NOTE: collision parameter add by mbell 5/5/22
+                    OnTriggerFirstEnter?.Invoke(other.gameObject);
                     triggerObjects.Add(other.gameObject);
                     triggerObjectsCount.Add(1);
                 }
@@ -126,10 +131,22 @@ namespace Autohand {
                     var index = triggerObjects.IndexOf(other.gameObject);
                     triggerObjectsCount[index] -= 1;
                     if(triggerObjectsCount[index] == 0) {
-                        OnTriggeLastExit?.Invoke(other.gameObject, null); //NOTE: collision parameter add by mbell 5/5/22
+                        OnTriggeLastExit?.Invoke(other.gameObject);
                         triggerObjectsCount.RemoveAt(index);
                         triggerObjects.Remove(other.gameObject);
                     }
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            foreach (var collision in collisions)
+            {
+                foreach (var contactPoint in collision.contacts)
+                {
+                    Gizmos.DrawSphere(contactPoint.point, 0.0025f);
+
                 }
             }
         }

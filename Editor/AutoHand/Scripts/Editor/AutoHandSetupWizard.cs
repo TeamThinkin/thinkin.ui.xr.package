@@ -12,7 +12,7 @@ public class AutoHandSetupWizard : EditorWindow {
     static string[] requiredLayerNames = { "Grabbing", "Grabbable", "Hand", "HandPlayer" };
     static string assetPath;
 
-    public static float quality = 1;
+    public static float quality = 2;
 
     static AutoHandSettings _handSettings = null;
     static AutoHandSettings handSettings {
@@ -33,11 +33,8 @@ public class AutoHandSetupWizard : EditorWindow {
 
         if(ShowSetupWindow()) {
             OpenWindow();
+            Application.OpenURL("https://earnest-robot.gitbook.io/auto-hand-docs/");
             assetPath = Application.dataPath;
-        }
-        else {
-            if(handSettings.quality >= 0)
-                SetPhysicsSettings(handSettings.quality);
         }
 
         EditorApplication.update -= Start;
@@ -76,7 +73,7 @@ public class AutoHandSetupWizard : EditorWindow {
         GUI.Label(qualityLabelRect, "Physics Quality", AutoHandExtensions.LabelStyle(TextAnchor.MiddleCenter, FontStyle.Normal, 16));
         GUILayout.Space(5f);
 
-        quality = GUI.HorizontalSlider(qualitySliderRect, quality, 0, 3);
+        quality = GUI.HorizontalSlider(qualitySliderRect, quality, -1, 3);
         quality = Mathf.Round(quality);
 
         GUI.Label(qualityLabelRect, QualityGUIContent(quality), AutoHandExtensions.LabelStyle(QualityColor(quality), TextAnchor.MiddleCenter));
@@ -101,38 +98,45 @@ public class AutoHandSetupWizard : EditorWindow {
 
         GUILayout.Space(15);
         var labelStyle = AutoHandExtensions.LabelStyle(new Color(0.7f, 0.7f, 0.7f, 1f));
+        var labelStyleB = AutoHandExtensions.LabelStyleB(new Color(0.7f, 0.7f, 0.7f, 1f));
 
-        if(quality <= 0) {
-            GUI.Label(qualitySliderRect, "Fixed Timestep: 1/50", labelStyle);
+        handSettings.usingDynamicTimestep = GUI.Toggle(qualitySliderRect, handSettings.usingDynamicTimestep, "Use Dynamic Timestep", labelStyleB);
+
+        if(quality <= -1) {
+            GUI.Label(qualitySliderRect, "Ignore Recommended Settings", labelStyle);
+        }
+        else if(quality <= 0) {
+            if(!handSettings.usingDynamicTimestep)
+                GUI.Label(qualitySliderRect, "Fixed Timestep: 1/50", labelStyle);
             GUI.Label(qualitySliderRect, "Contact Offset: 0.01", labelStyle);
-            GUI.Label(qualitySliderRect, "Sleep Threshold: 0.0025", labelStyle);
             GUI.Label(qualitySliderRect, "Solver Iterations: 10", labelStyle);
-            GUI.Label(qualitySliderRect, "Solver Velocity Iterations: 10", labelStyle);
+            GUI.Label(qualitySliderRect, "Solver Velocity Iterations: 5", labelStyle);
         }
         else if(quality <= 1) {
-            GUI.Label(qualitySliderRect, "Fixed Timestep: 1/60", labelStyle);
-            GUI.Label(qualitySliderRect, "Contact Offset: 0.0075", labelStyle);
-            GUI.Label(qualitySliderRect, "Sleep Threshold: 0.001", labelStyle);
-            GUI.Label(qualitySliderRect, "Solver Iterations: 25", labelStyle);
-            GUI.Label(qualitySliderRect, "Solver Velocity Iterations: 25", labelStyle);
+            if(!handSettings.usingDynamicTimestep)
+                GUI.Label(qualitySliderRect, "Fixed Timestep: 1/60", labelStyle);
+            GUI.Label(qualitySliderRect, "Contact Offset: 0.01", labelStyle);
+            GUI.Label(qualitySliderRect, "Solver Iterations: 10", labelStyle);
+            GUI.Label(qualitySliderRect, "Solver Velocity Iterations: 5", labelStyle);
             GUI.Label(qualitySliderRect, "Enable Adaptive Force: true", labelStyle);
         }
         else if(quality <= 2) {
-            GUI.Label(qualitySliderRect, "Fixed Timestep: 1/72", labelStyle);
+            if(!handSettings.usingDynamicTimestep)
+                GUI.Label(qualitySliderRect, "Fixed Timestep: 1/72", labelStyle);
             GUI.Label(qualitySliderRect, "Contact Offset: 0.005", labelStyle);
-            GUI.Label(qualitySliderRect, "Sleep Threshold: 0.0005", labelStyle);
+            GUI.Label(qualitySliderRect, "Solver Iterations: 20", labelStyle);
+            GUI.Label(qualitySliderRect, "Solver Velocity Iterations: 10", labelStyle);
+            GUI.Label(qualitySliderRect, "Enable Adaptive Force: true", labelStyle);
+        }
+        else if(quality <= 3) {
+            if(!handSettings.usingDynamicTimestep)
+                GUI.Label(qualitySliderRect, "Fixed Timestep: 1/90", labelStyle);
+            GUI.Label(qualitySliderRect, "Contact Offset: 0.0035", labelStyle);
             GUI.Label(qualitySliderRect, "Solver Iterations: 50", labelStyle);
             GUI.Label(qualitySliderRect, "Solver Velocity Iterations: 50", labelStyle);
             GUI.Label(qualitySliderRect, "Enable Adaptive Force: true", labelStyle);
         }
-        else if(quality <= 3) {
-            GUI.Label(qualitySliderRect, "Fixed Timestep: 1/90", labelStyle);
-            GUI.Label(qualitySliderRect, "Contact Offset: 0.0035", labelStyle);
-            GUI.Label(qualitySliderRect, "Sleep Threshold: 0.0001", labelStyle);
-            GUI.Label(qualitySliderRect, "Solver Iterations: 100", labelStyle);
-            GUI.Label(qualitySliderRect, "Solver Velocity Iterations: 100", labelStyle);
-            GUI.Label(qualitySliderRect, "Enable Adaptive Force: true", labelStyle);
-        }
+
     }
 
     public static void SetPhysicsSettings(float quality) {
@@ -140,9 +144,8 @@ public class AutoHandSetupWizard : EditorWindow {
         if(quality <= 0) {
             Time.fixedDeltaTime = 1 / 50f;
             Physics.defaultContactOffset = 0.01f;
-            Physics.sleepThreshold = 0.0025f;
             Physics.defaultSolverIterations = 10;
-            Physics.defaultSolverVelocityIterations = 10;
+            Physics.defaultSolverVelocityIterations = 5;
             Physics.defaultMaxAngularSpeed = 35f;
 
         }
@@ -150,27 +153,24 @@ public class AutoHandSetupWizard : EditorWindow {
             EnableAdaptiveForce();
             Time.fixedDeltaTime = 1 / 60f;
             Physics.defaultContactOffset = 0.0075f;
-            Physics.sleepThreshold = 0.001f;
-            Physics.defaultSolverIterations = 25;
-            Physics.defaultSolverVelocityIterations = 25;
+            Physics.defaultSolverIterations = 10;
+            Physics.defaultSolverVelocityIterations = 5;
             Physics.defaultMaxAngularSpeed = 35f;
         }
         else if(quality <= 2) {
             EnableAdaptiveForce();
             Time.fixedDeltaTime = 1 / 72f;
             Physics.defaultContactOffset = 0.005f;
-            Physics.sleepThreshold = 0.00075f;
-            Physics.defaultSolverIterations = 50;
-            Physics.defaultSolverVelocityIterations = 50;
+            Physics.defaultSolverIterations = 20;
+            Physics.defaultSolverVelocityIterations = 10;
             Physics.defaultMaxAngularSpeed = 35f;
         }
         else if(quality <= 3) {
             EnableAdaptiveForce();
             Time.fixedDeltaTime = 1 / 90f;
             Physics.defaultContactOffset = 0.0035f;
-            Physics.sleepThreshold = 0.0001f;
-            Physics.defaultSolverIterations = 100;
-            Physics.defaultSolverVelocityIterations = 100;
+            Physics.defaultSolverIterations = 30;
+            Physics.defaultSolverVelocityIterations = 20;
             Physics.defaultMaxAngularSpeed = 35f;
         }
     }
@@ -240,12 +240,14 @@ public class AutoHandSetupWizard : EditorWindow {
 
     public GUIContent QualityGUIContent(float quality) {
         var content = new GUIContent();
-        if(quality <= 0)
+        if(quality <= -1)
+            content.text += "IGNORE RECOMMENDED SETTINGS";
+        else if(quality <= 0)
             content.text += "LOW (Not Recommended)";
         else if(quality <= 1)
             content.text += "MEDIUM";
         else if(quality <= 2)
-            content.text += "HIGH";
+            content.text += "HIGH (Quest Recommended)";
         else if(quality <= 3)
             content.text += "VERY HIGH";
 

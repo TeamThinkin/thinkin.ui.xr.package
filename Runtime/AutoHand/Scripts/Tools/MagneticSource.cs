@@ -14,7 +14,7 @@ namespace Autohand {
     public class UnityMagneticEvent : UnityEvent<MagneticSource, MagneticBody> { }
 
     [Serializable]
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody)), HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/extras/magnetic-forces")]
     public class MagneticSource : MonoBehaviour {
         public MagnetEffect magneticEffect;
         public float strength = 10f;

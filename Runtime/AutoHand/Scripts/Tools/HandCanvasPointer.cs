@@ -9,6 +9,8 @@ namespace Autohand
 {
     [Serializable]
     public class UnityCanvasPointerEvent : UnityEvent<Vector3, GameObject> { }
+
+    [HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/extras/ui-interaction")]
     public class HandCanvasPointer : MonoBehaviour
     {
         [Header("References")]

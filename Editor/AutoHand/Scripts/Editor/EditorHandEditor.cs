@@ -19,7 +19,7 @@ namespace Autohand {
                 fingerStates[i] = true;
             }
 
-            hand.SetLayer();
+            hand.SetLayerRecursive(hand.transform, LayerMask.NameToLayer(hand.left ? Hand.leftHandLayerName : Hand.rightHandLayerName));
         }
 
         void OnSceneGUI() {
@@ -39,7 +39,7 @@ namespace Autohand {
 
             Handles.BeginGUI();
 
-            GUILayout.BeginArea(new Rect(30, 30, 150, 300));
+            GUILayout.BeginArea(new Rect(60, 30, 150, 300));
 
             var rect = EditorGUILayout.BeginVertical();
             GUI.color = Color.grey;
@@ -77,8 +77,22 @@ namespace Autohand {
 
             GUI.backgroundColor = new Color(0.9f, 0.3f, 0.3f, 1f);
 
-            if(GUILayout.Button("Invert Hand")) {
+            if(GUILayout.Button("Invert Hand - X")) {
                 var scale = hand.transform.parent.localScale;
+                scale.x = -scale.x;
+                hand.transform.parent.localScale = scale;
+                hand.left = !hand.left;
+            }
+            if(GUILayout.Button("Invert Hand - Y")) {
+                var scale = hand.transform.parent.localScale;
+                scale.x = -scale.x;
+                hand.transform.parent.Rotate(new Vector3(0, 0, 180));
+                hand.transform.parent.localScale = scale;
+                hand.left = !hand.left;
+            }
+            if(GUILayout.Button("Invert Hand - Z")) {
+                var scale = hand.transform.parent.localScale;
+                hand.transform.parent.Rotate(new Vector3(0, 180, 0));
                 scale.x = -scale.x;
                 hand.transform.parent.localScale = scale;
                 hand.left = !hand.left;
@@ -148,9 +162,13 @@ namespace Autohand {
                     GUI.backgroundColor = Color.red;
 
 
-                if(GUILayout.Button("Save Left")) {
-                    if(pose.poseIndex != pose.editorHand.poseIndex)
-                        Debug.LogError("CANNOT SAVE: Your hand's \"Pose Index\" value does not match the local \"Pose Index\" value");
+                if(GUILayout.Button("Save Left"))
+                {
+                    if (pose.poseIndex != pose.editorHand.poseIndex)
+                    {
+                        Debug.Log("Automatically overriding local Pose Index to match hand Pose Index");
+                        pose.poseIndex = pose.editorHand.poseIndex;
+                    }
                     else
                         pose.EditorSaveGrabPose(pose.editorHand, true);
                 }
@@ -163,8 +181,11 @@ namespace Autohand {
 
 
                 if(GUILayout.Button("Save Right")) {
-                    if(pose.poseIndex != pose.editorHand.poseIndex)
-                        Debug.LogError("CANNOT SAVE: Your hand's \"Pose Index\" value does not match the local \"Pose Index\" value");
+                    if (pose.poseIndex != pose.editorHand.poseIndex)
+                    {
+                        Debug.Log("Automatically overriding local Pose Index to match hand Pose Index");
+                        pose.poseIndex = pose.editorHand.poseIndex;
+                    }
                     else
                         pose.EditorSaveGrabPose(pose.editorHand, false);
                 }

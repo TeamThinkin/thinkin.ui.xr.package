@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace Autohand{
+    [HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/teleportation")]
     public class Teleporter : MonoBehaviour{
         [Header("Teleport")]
         [Tooltip("The object to teleport")]

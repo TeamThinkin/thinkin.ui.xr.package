@@ -7,7 +7,7 @@ using UnityEditor;
 #endif
 
 namespace Autohand {
-    [HelpURL("https://earnestrobot.notion.site/Custom-Poses-868c1fa0590542a0b5b7937b5feb6b0d")]
+    [HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/custom-poses#advanced-grabbable-pose")]
     public class GrabbablePoseAdvanced : GrabbablePose{
         [Tooltip("Usually this can be left empty, used to create a different center point if the objects transform isn't ceneterd for the prefered rotation/movement axis")]
         public Transform centerObject;
@@ -311,7 +311,7 @@ namespace Autohand {
                 
                 lastAngle = testAngle;
                 lastRange = testRange;
-                if(CanSetPose(editorHand))
+                if(CanSetPose(editorHand, transform.GetComponent<Grabbable>()))
                     GetHandPoseData(editorHand, testAngle, testRange).SetPose(editorHand, GetTransform());
             }
         }

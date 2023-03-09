@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace Autohand{
+    [HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/extras/stabbing")]
     public class Stabbable : MonoBehaviour{
         public Rigidbody body;
         public Grabbable grabbable;

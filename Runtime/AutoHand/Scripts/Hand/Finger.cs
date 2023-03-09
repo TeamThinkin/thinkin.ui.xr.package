@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Autohand{
-    [HelpURL("https://earnestrobot.notion.site/Fingers-63ae83cda0b14a35b5ae15beeb51dc03")]
+    [HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/hand/finger-component")]
     public class Finger : MonoBehaviour{
         [Header("Tips")]
         [Tooltip("This transfrom will represent the tip/stopper of the finger")]
@@ -40,6 +40,7 @@ namespace Autohand{
         Transform[] fingerJoints;
         
         float lastHitBend;
+
         Collider[] results = new Collider[2];
 
 
@@ -48,50 +49,52 @@ namespace Autohand{
             SlowBend();
         }
 
+
+
         /// <summary>Forces the finger to a bend until it hits something on the given physics layer</summary>
         /// <param name="steps">The number of steps and physics checks it will make lerping from 0 to 1</param>
         public bool BendFingerUntilHit(int steps, int layermask) {
             ResetBend();
             lastHitBend = 0;
 
-            for (float i = 0; i <= steps/5f; i++) {
+            for(float i = 0; i <= steps / 5f; i++) {
                 results[0] = null;
                 lastHitBend = i / (steps / 5f);
-                for (int j = 0; j < fingerJoints.Length; j++){
+                for(int j = 0; j < fingerJoints.Length; j++) {
                     fingerJoints[j].localPosition = Vector3.Lerp(minGripPosPose[j], maxGripPosPose[j], lastHitBend);
                     fingerJoints[j].localRotation = Quaternion.Lerp(minGripRotPose[j], maxGripRotPose[j], lastHitBend);
                 }
                 Physics.OverlapSphereNonAlloc(tip.transform.position, tipRadius, results, layermask, QueryTriggerInteraction.Ignore);
 
-                if (results[0] != null){
+                if(results[0] != null) {
                     lastHitBend = Mathf.Clamp01(lastHitBend);
-                    if (i == 0)
+                    if(i == 0)
                         return true;
                     break;
                 }
 
             }
-            
 
-            lastHitBend -= (5f/steps);
-            for (int i = 0; i <= steps/10f; i++){
+
+            lastHitBend -= (5f / steps);
+            for(int i = 0; i <= steps / 10f; i++) {
                 results[0] = null;
-                lastHitBend += (1f/steps);
-                for(int j = 0; j < fingerJoints.Length; j++){
+                lastHitBend += (1f / steps);
+                for(int j = 0; j < fingerJoints.Length; j++) {
                     fingerJoints[j].localPosition = Vector3.Lerp(minGripPosPose[j], maxGripPosPose[j], lastHitBend);
                     fingerJoints[j].localRotation = Quaternion.Lerp(minGripRotPose[j], maxGripRotPose[j], lastHitBend);
                 }
                 Physics.OverlapSphereNonAlloc(tip.transform.position, tipRadius, results, layermask, QueryTriggerInteraction.Ignore);
-                
 
-                if (results[0] != null){
+
+                if(results[0] != null) {
                     bend = lastHitBend;
                     currBendOffset = lastHitBend;
                     lastHitBend = Mathf.Clamp01(lastHitBend);
                     return true;
                 }
 
-                if (lastHitBend >= 1) {
+                if(lastHitBend >= 1) {
                     lastHitBend = Mathf.Clamp01(lastHitBend);
                     return true;
                 }
@@ -103,7 +106,7 @@ namespace Autohand{
         }
 
 
-    
+
         /// <summary>Bends the finger unless its hitting something</summary>
         /// <param name="bend">0 is no bend / 1 is full bend</param>
         public bool UpdateFingerBend(float bend, int layermask) {

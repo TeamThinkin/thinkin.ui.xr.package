@@ -1,3 +1,74 @@
+
+V3.2.1
+Bug Fixes
+- Fixed bug with player drifting while using zero-gravity
+- Fixed bug with force grab not working sometimes
+- Fixed bug with handoffsets not working as expected
+- Fixed bug with the players collider not following tracking space movement properly
+- Fixed bug with Place Point "Destroy On Place" not working as expected
+- Fixed bug with Force Grab not working with grab poses when called immediately after an instantiate
+- Fixed bug with grab collider list not being generated properly
+
+
+V3.2
+New Features
+- Added Gun with Reloadable Magazine and Slide example
+- Added Grabbable Pose Animation
+- Added Grabbable Dispenser Point
+- Added "Held No Friction" toggle on grabbable
+- Added Grabbable Held Joint
+- Added Documentation for all new features on gitbook docs
+
+General Improvements
+- Hands no longer use cone of raycast now one raycast for each overlapping collider
+- Player no longer uses rayscasts but instead uses a single spherecast for grounding
+- Ignore collision after release now stays active until hand is removed from inside all grabbable colliders to strongly prevent clipping
+- Improved stability of two handed holding especially when pulling hands far apart while holding
+- Grabbables no longer have a local update function, instead they use a heldupdate function which is called through the hand while being held
+- Improved TryGrab function to remove failure edge cases. Also included alternatively named ForceGrab() function to make it easier to find
+- Lowered recommended Solver rates
+- Interpolation system replaced with dynamic timestep, which removes the need for a few sweep tests
+- Increased Stability of Joints
+
+Bug Fixes
+- Fixed "editorSelected" variable error warning
+- Fixed bug with (saved grab pose + grabbable to hand) not working cleanly
+- Fixed bug with placepoint tag setting not working properly
+- Fixed bug causing grenades to crash the demo scene
+- Fixed bug setting child layers to parent grabbable layers on grab
+- Fixed bug causing grab return to happen too quickly
+- Fixed bug causing parent on grab to not work properly when using nested grabbables
+- Fixed logic around multiple grabbables under one body with place points
+- Fixed bug with platforming failing on the edge of a large rotating object
+- Fixed bug with platform rotation not being perfectly smooth
+- Auto Hand no longer resets recommended setting on every start, only when the apply button is pressed
+- Fixed bug with hand sway not working smoothly under some settings
+- Other bug fixes
+
+
+V3.1.3
+Bug Fixes
+- Haptics now supported on OpenXR
+- Fixed player sometimes flickering and getting thrown
+- Fixed hand projection/highlight not working in the demo scene
+- Fixed place point not accounting for pivot properly
+- Fixed hand sway not working on proper axis
+- Fixed place points not allowing grab after place with rigidbody deactivation
+- Fixed objects held by two hands sometimes jitter while moving
+- Fixed player tilting over when stepping on dynamic objects
+- Fixed NaN error
+
+V3.1.2
+Bug Fixes
+- Fixed broken prefab link in the Oculus Integration Hand Tracking package
+- Fixed bug with rotationg platforms
+- Fixed hand offsets for OpenXR demo
+
+V3.1.1
+Bug Fixes
+- Fixed broken prefab links in the Oculus Integration package
+- Fixed broken/outdated documenation link
+
 V3.1
 New Features
 - Improved documentation and moved it to a better website

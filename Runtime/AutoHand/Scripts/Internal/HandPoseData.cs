@@ -135,6 +135,8 @@ namespace Autohand {
 
                 hand.transform.position = handMatch.position;
                 hand.transform.rotation = handMatch.rotation;
+                hand.body.position = hand.transform.position;
+                hand.body.rotation = hand.transform.rotation;
 
 #if UNITY_EDITOR
                 if(Application.isEditor && !Application.isPlaying)
@@ -192,6 +194,8 @@ namespace Autohand {
 
                 hand.transform.position = handMatch.position;
                 hand.transform.rotation = handMatch.rotation;
+                hand.body.position = hand.transform.position;
+                hand.body.rotation = hand.transform.rotation;
 
 #if UNITY_EDITOR
                 if(Application.isEditor && !Application.isPlaying)

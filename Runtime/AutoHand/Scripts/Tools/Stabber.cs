@@ -6,6 +6,7 @@ using UnityEngine.Events;
 namespace Autohand {
     public delegate void StabEvent(Stabber stabber, Stabbable stab);
 
+    [HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/extras/stabbing")]
     public class Stabber : MonoBehaviour {
         [Tooltip("Can be left empty/null")]
         public Grabbable grabbable;
@@ -218,9 +219,6 @@ namespace Autohand {
             if(stab.parentOnStab && grabbable) {
                 grabbable.AddJointedBody(stab.body);
             }
-            else if(grabbable) {
-                grabbable.ignoreParent = true;
-            }
         }
 
         protected virtual void OnStabbableExit(Stabbable stab) {
@@ -234,9 +232,6 @@ namespace Autohand {
             EndStabEvent?.Invoke(this, stab);
             if(stab.parentOnStab && grabbable) {
                 grabbable.RemoveJointedBody(stab.body);
-            }
-            else if(grabbable) {
-                grabbable.ignoreParent = false;
             }
         }
 

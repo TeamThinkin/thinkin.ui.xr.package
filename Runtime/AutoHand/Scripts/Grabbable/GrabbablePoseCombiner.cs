@@ -8,9 +8,9 @@ namespace Autohand{
 
         HandPoseData pose;
 
-        public bool CanSetPose(Hand hand) {
+        public bool CanSetPose(Hand hand, Grabbable grab) {
             foreach(var pose in poses) {
-                if(pose != null && pose.CanSetPose(hand))
+                if(pose != null && pose.CanSetPose(hand, grab))
                     return true;
             }
             return false;
@@ -29,10 +29,10 @@ namespace Autohand{
             }
         }
 
-        public GrabbablePose GetClosestPose(Hand hand){
+        public GrabbablePose GetClosestPose(Hand hand, Grabbable grab) {
             List<GrabbablePose> possiblePoses = new List<GrabbablePose>();
             foreach(var handPose in this.poses)
-                if(handPose != null && handPose.CanSetPose(hand))
+                if(handPose != null && handPose.CanSetPose(hand, grab))
                     possiblePoses.Add(handPose);
             
             float closestValue = float.MaxValue;
@@ -42,6 +42,8 @@ namespace Autohand{
             for (int i = 0; i < possiblePoses.Count; i++){
                 var pregrabPos = hand.transform.position;
                 var pregrabRot = hand.transform.rotation;
+                var pregrabBodPos = hand.body.position;
+                var pregrabBodRot = hand.body.rotation;
 
                 var tempContainer = AutoHandExtensions.transformRuler;
                 tempContainer.rotation = Quaternion.identity;
@@ -68,6 +70,8 @@ namespace Autohand{
 
                 hand.transform.position = pregrabPos;
                 hand.transform.rotation = pregrabRot;
+                hand.body.position = pregrabBodPos;
+                hand.body.rotation = pregrabBodRot;
             }
 
             return possiblePoses[closestIndex];

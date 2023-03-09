@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/extras/collision-sounds")]
 public class CollisionSound : MonoBehaviour{
     [Tooltip("The layers that cause the sound to play")]
     public LayerMask collisionTriggers = ~0;

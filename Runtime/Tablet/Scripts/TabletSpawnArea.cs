@@ -55,7 +55,7 @@ public class TabletSpawnArea : HandTriggerAreaEvents
 
         tabletInstance.transform.position = hand.transform.position;
         tabletInstance.transform.rotation = hand.transform.rotation;
-        tabletInstance.transform.Rotate(hand.transform.forward - hand.transform.up, 180);
+        //tabletInstance.transform.Rotate(hand.transform.forward - hand.transform.up, 180);
 
         StartCoroutine(attachToHand(hand, tabletInstance.gameObject));
     }
@@ -66,7 +66,7 @@ public class TabletSpawnArea : HandTriggerAreaEvents
 
         var tabletGrabbable = tablet.GetComponent<Grabbable>();
         tabletGrabbable.body.isKinematic = false;
-        tabletGrabbable.wasKinematic = true;
+        //tabletGrabbable.wasKinematic = true;
         hand.TryGrab(tabletGrabbable);
         hoverTablet = tablet.GetComponent<Tablet>();
     }

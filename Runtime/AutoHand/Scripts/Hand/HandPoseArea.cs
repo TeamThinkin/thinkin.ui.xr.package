@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Autohand{
-    [HelpURL("https://www.notion.so/Pose-Areas-99b9af26d297442a91a9d73f65f13635")]
+    [HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/custom-poses#hand-pose-areas")]
     public class HandPoseArea : MonoBehaviour{
         public string poseName;
         public int poseIndex = 0;
@@ -47,7 +47,7 @@ namespace Autohand{
         }
 
         private void OnDisable() {
-            for(int i = 0; i < posingHands.Count; i++)
+            for(int i = posingHands.Count - 1; i >= 0; i--) 
                 posingHands[i].TryRemoveHandPoseArea(this);
             OnHandEnter.RemoveListener(HandEnter);
             OnHandExit.RemoveListener(HandExit);

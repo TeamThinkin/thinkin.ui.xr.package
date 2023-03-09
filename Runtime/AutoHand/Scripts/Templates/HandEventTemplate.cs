@@ -108,20 +108,20 @@ public class HandEventTemplate : MonoBehaviour{
 
 
 
-    void OnHandCollisionStart(Hand hand, GameObject other, Collision collision) { //NOTE: collision added by mbell 5/5/22
+    void OnHandCollisionStart(Hand hand, GameObject other) {
         //Called when the hand hits an object for the first time and isn't already colliding
     }
 
-    void OnHandCollisionStop(Hand hand, GameObject other, Collision collision) { //NOTE: collision added by mbell 5/5/22
+    void OnHandCollisionStop(Hand hand, GameObject other) {
         //Called all the hand has zero collisions on the object
 
     }
 
-    void OnHandTriggerStart(Hand hand, GameObject other, Collision collision) { //NOTE: collision added by mbell 5/5/22
+    void OnHandTriggerStart(Hand hand, GameObject other) {
         //Called when the hand triggers an object for the first time and isn't already triggering
     }
 
-    void OnHandTriggerStop(Hand hand, GameObject other, Collision collision) { //NOTE: collision added by mbell 5/5/22
+    void OnHandTriggerStop(Hand hand, GameObject other) {
         //Called when the hand has zero colliders overlapping this trigger
     }
 

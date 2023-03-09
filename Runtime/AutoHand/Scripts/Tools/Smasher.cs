@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace Autohand.Demo{
     public delegate void SmashEvent(Smasher smasher, Smash smashable);
 
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody)), HelpURL("https://app.gitbook.com/s/5zKO0EvOjzUDeT2aiFk3/auto-hand/extras/smashing")]
     public class Smasher : MonoBehaviour{
         Rigidbody rb;
         [Header("Options")]

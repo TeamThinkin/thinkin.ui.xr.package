@@ -189,7 +189,7 @@ namespace Autohand {
                     GrabbablePose grabPose;
                     handProjection.transform.localPosition = hand.transform.localPosition;
                     handProjection.transform.localRotation = hand.transform.localRotation;
-                    if(grabPose = handProjection.GetGrabPose(targetHit.collider.transform, target)) {
+                    if(handProjection.GetGrabPose(target, out grabPose)) {
                         grabPose.SetHandPose(handProjection, true);
                     }
                     else {

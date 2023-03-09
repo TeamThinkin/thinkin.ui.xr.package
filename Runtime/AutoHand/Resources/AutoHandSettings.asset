@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: AutoHandSettings
   m_EditorClassIdentifier: 
   ignoreSetup: 0
-  quality: 1
+  usingDynamicTimestep: 1
+  quality: 2
