@@ -105,12 +105,12 @@ public class Keyboard : MonoBehaviour, IKeyboard
           
     public void SetInput(IFocusItem item)
     {
-        if (FocusManager.CurrentFocusItem == item && isOpen)
-        {
-            FocusManager.ClearFocus();
-            Close();
-            return;
-        }
+        //if (FocusManager.CurrentFocusItem == item && isOpen)
+        //{
+        //    FocusManager.ClearFocus();
+        //    Close();
+        //    return;
+        //}
         
         FocusManager.SetFocus(item);
 
