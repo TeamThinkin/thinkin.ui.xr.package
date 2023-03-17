@@ -16,6 +16,8 @@ public class Keyboard : MonoBehaviour, IKeyboard
         }
     }
 
+    private const float MinMoveDistance = 0.25f;
+
     [SerializeField] private KeyboardLayout _layout;
     public KeyboardLayout Layout => _layout;
 
@@ -105,13 +107,7 @@ public class Keyboard : MonoBehaviour, IKeyboard
           
     public void SetInput(IFocusItem item)
     {
-        //if (FocusManager.CurrentFocusItem == item && isOpen)
-        //{
-        //    FocusManager.ClearFocus();
-        //    Close();
-        //    return;
-        //}
-        
+        CancelInvoke("closeKeyboard");
         FocusManager.SetFocus(item);
 
         var head = Camera.main.transform;
@@ -126,18 +122,30 @@ public class Keyboard : MonoBehaviour, IKeyboard
         
         if (isOpen)
         {
-            var startPosition = transform.position;
-            var startRotation = transform.rotation;
+            //The keyboard is already open
+            var distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
-            //The keyboard is already open, just move to new location
-            AnimationHelper.StartAnimation(this, ref animateCoroutine, ButtonAnimationDuration * 0.5f, 0, 1, t =>
+            if (distanceToTarget >= MinMoveDistance)
             {
-                transform.position = Vector3.Lerp(startPosition, targetPosition, t);
-                transform.rotation = Quaternion.Slerp(startRotation, targetRot, t);
-            }, () =>
+                //We are sufficiently far enough away from our target position to warrant a move
+                var startPosition = transform.position;
+                var startRotation = transform.rotation;
+
+                //Animate to new position
+                AnimationHelper.StartAnimation(this, ref animateCoroutine, ButtonAnimationDuration * 0.5f, 0, 1, t =>
+                {
+                    transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+                    transform.rotation = Quaternion.Slerp(startRotation, targetRot, t);
+                }, () =>
+                {
+                    sourcePosition = ButtonContainer.InverseTransformPoint(item.transform.position);
+                }, ButtonAnimationCurve);
+            }
+            else
             {
+                //We are not sufficiently far enough away from our target position to bother moving to a new place
                 sourcePosition = ButtonContainer.InverseTransformPoint(item.transform.position);
-            }, ButtonAnimationCurve);
+            }
         }
         else
         {
@@ -167,7 +175,15 @@ public class Keyboard : MonoBehaviour, IKeyboard
 
     public void Close()
     {
+        Invoke("closeKeyboard", 0.2f);
+    }
+
+    private void closeKeyboard()
+    {
+        if (!isOpen) return;
+
         isOpen = false;
+        FocusManager.ClearFocus();
         AnimationHelper.StartAnimation(this, ref animateCoroutine, ButtonAnimationDuration * 0.7f, 0, 1, t =>
         {
             var preservedState = Random.state;
