@@ -29,22 +29,20 @@ public class Keyboard : MonoBehaviour, IKeyboard
     [SerializeField] private AudioClip ButtonUpAudio;
     [SerializeField] private AudioClip ButtonLongPressAudio;
 
+    public event System.Action<char> OnCharacterKeyPressed;
+    public event System.Action<KeyCode> OnCommandKeyPressed;
+
     public Transform ButtonContainer;
     public KeyboardButton[] Buttons;
     public bool IsCapitals { get; private set; }
 
-    public EditableText Text { get; private set; } = new EditableText();
-
     private Dictionary<KeyboardButton, KeyInfo> keyDownTime = new Dictionary<KeyboardButton, KeyInfo>();
     private bool isOpen;
-
-    public static Keyboard Instance { get; private set; }
-
-    public IFocusItem CurrentFocusItem => FocusManager.CurrentFocusItem;
+    private Coroutine animateCoroutine;
+    private Vector3 sourcePosition;
 
     private void Awake()
     {
-        Instance = this;
         gameObject.SetActive(false);
         isOpen = false;
     }
@@ -62,7 +60,7 @@ public class Keyboard : MonoBehaviour, IKeyboard
             if(!entry.Value.IsHandled && entry.Key.KeyInfo.Special == SpecialKeyboardKey.None && Time.time - entry.Value.KeyDownTime >= LongPressDuration) //Check for long press
             {
                 entry.Value.IsHandled = true;
-                Text.AddText(entry.Key.KeyInfo.SecondaryKey);
+                OnCharacterKeyPressed?.Invoke(entry.Key.KeyInfo.SecondaryKey[0]);
                 entry.Key.AudioPlayer.PlayOneShot(ButtonLongPressAudio);
             }
         }
@@ -85,14 +83,14 @@ public class Keyboard : MonoBehaviour, IKeyboard
                 Close();
                 break;
             case SpecialKeyboardKey.Backspace:
-                Text.Backspace();
+                OnCommandKeyPressed?.Invoke(KeyCode.Backspace);
                 break;
             case SpecialKeyboardKey.Shift:
                 IsCapitals = !IsCapitals;
                 updateButtonText();
                 break;
             case SpecialKeyboardKey.None:
-                Text.AddText(IsCapitals ? Button.KeyInfo.MainKey.ToUpper() : Button.KeyInfo.MainKey);
+                OnCharacterKeyPressed?.Invoke((IsCapitals ? Button.KeyInfo.MainKey.ToUpper() : Button.KeyInfo.MainKey)[0]);
                 break;
         }
     }
@@ -104,10 +102,8 @@ public class Keyboard : MonoBehaviour, IKeyboard
             button.UpdateText();
         }
     }
-
-    private Coroutine animateCoroutine;
-    private Vector3 sourcePosition;
-    public void ShowForInput(IFocusItem item)
+          
+    public void SetInput(IFocusItem item)
     {
         if (FocusManager.CurrentFocusItem == item && isOpen)
         {
@@ -119,7 +115,13 @@ public class Keyboard : MonoBehaviour, IKeyboard
         FocusManager.SetFocus(item);
 
         var head = Camera.main.transform;
-        var targetPosition = head.position + head.forward * 0.3f + head.up * -0.2f;
+        //var targetPosition = head.position + (head.forward * 0.3f + head.up * -0.2f) * 2f;
+        float distance = 0.5f;
+        var direction = (item.transform.position - head.position);
+        
+        distance = Mathf.Min(distance, direction.magnitude);
+        direction.Normalize();
+        var targetPosition = head.position + direction * distance + Vector3.up * -0.2f;
         var targetRot = Quaternion.LookRotation(head.position - targetPosition);
         
         if (isOpen)
