@@ -69,9 +69,10 @@ public class KeyboardEditor : Editor
         keyButton.transform.localPosition = keyButton.LayoutLocalPosition = position;
         keyButton.transform.localScale = keyButton.LayoutLocalScale = Vector3.one * size;
         keyButton.SetWidth(key.Width);
+        keyButton.GetComponent<BoxCollider>().size = new Vector3(key.Width, 1, 0.1f);
 
-        keyButton.transform.Find("Primary Label").GetComponent<TMPro.TMP_Text>().text = keyText;
-        keyButton.transform.Find("Secondary Label").GetComponent<TMPro.TMP_Text>().text = key.SecondaryKey;
+        keyButton.transform.Find("Visuals/Primary Label").GetComponent<TMPro.TMP_Text>().text = keyText;
+        keyButton.transform.Find("Visuals/Secondary Label").GetComponent<TMPro.TMP_Text>().text = key.SecondaryKey;
         keyButton.KeyInfo = key;
         Debug.Log("Setting keyinfo: " + key.MainKey + " " + key.SecondaryKey);
         EditorUtility.SetDirty(keyButton);

@@ -16,7 +16,7 @@ public class Keyboard : MonoBehaviour, IKeyboard
         }
     }
 
-    private const float MinMoveDistance = 0.25f;
+    private const float MinMoveDistance = 0.35f;
 
     [SerializeField] private KeyboardLayout _layout;
     public KeyboardLayout Layout => _layout;
@@ -90,6 +90,9 @@ public class Keyboard : MonoBehaviour, IKeyboard
             case SpecialKeyboardKey.Shift:
                 IsCapitals = !IsCapitals;
                 updateButtonText();
+                break;
+            case SpecialKeyboardKey.Enter:
+                OnCommandKeyPressed?.Invoke(KeyCode.Return);
                 break;
             case SpecialKeyboardKey.None:
                 OnCharacterKeyPressed?.Invoke((IsCapitals ? Button.KeyInfo.MainKey.ToUpper() : Button.KeyInfo.MainKey)[0]);
