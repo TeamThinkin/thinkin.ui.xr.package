@@ -16,7 +16,7 @@ public static class XrUIModule
         Rigidbody body = Item.GetComponent<Rigidbody>();
         if (body == null)
         {
-            body = Item.AddComponent<Rigidbody>();
+            body = Item.AddComponent<Rigidbody>(); 
             body.useGravity = false;
             body.drag = 0.2f;
             body.angularDrag = 0.2f;

@@ -29,7 +29,7 @@ public class CollectionExplorer : MonoBehaviour
     //    Initialize();
     //}
 
-    private async void Initialize()
+    private void Initialize()
     {
         //TODO: commented out during the Package refactor
         //if (UserInfo.CurrentUser == null) return;
@@ -44,7 +44,7 @@ public class CollectionExplorer : MonoBehaviour
         ////Graph.SetGraphRoot(getMockGraph());
     }
 
-    private async void Graph_NodeSelected(NodeViewModel SelectedNodeViewModel)
+    private void Graph_NodeSelected(NodeViewModel SelectedNodeViewModel) 
     {
         //TODO: commented out during the Package refactor
         //var node = SelectedNodeViewModel.Node as GraphNode<CollectionNodeDto>;

@@ -35,7 +35,7 @@ public class ContentSelectorPanel : TabPanel
         //UserInfo.OnCurrentUserChanged += UserInfo_OnCurrentUserChanged;//TODO: commented out during the Package refactor
     }
 
-    private void Start()
+    override protected void Start()
     {
         initialize();
     }
@@ -154,7 +154,7 @@ public class ContentSelectorPanel : TabPanel
         }
     }
 
-    private async void fetchCollection(string url)
+    private void fetchCollection(string url)
     {
         //TODO: commented out during the Package refactor
         //if(requestedUrls.Contains(url)) return;
